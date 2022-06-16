@@ -165,6 +165,22 @@ services:
     depends_on:
       - zookeeper
 
+  kafka-manage:
+    image: dushixiang/kafka-map:latest
+    container_name: kafka-manage
+    restart: always
+    ports:
+      - "8080:8080"
+    command: 
+      - 'DEFAULT_USERNAME=admin'
+      - 'DEFAULT_PASSWORD=admin'
+    volumes:
+      - ./data/kafka-map/data:/usr/local/kafka-map/data
+    networks:
+      - looklook_net
+    depends_on:
+      - kafka
+
   #asynqmon asynq延迟队列、定时队列的webui
   asynqmon:
     image: hibiken/asynqmon:latest
