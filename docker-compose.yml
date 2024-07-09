@@ -1,9 +1,6 @@
-version: '3'
-
 ######## app下api+rpc ,  Before starting this project, start the environment that the project depends on docker-compose-env.yml #######
 
 services:
-
   #前端网关nginx-gateay (只代理looklook，admin-api不在这里做代理)
   # Front-end gateway nginx-gateway (Only agent looklook，admin-api Do not be an agent here)
   nginx-gateway:
@@ -47,4 +44,3 @@ networks:
     ipam:
       config:
         - subnet: 172.20.0.0/16
-

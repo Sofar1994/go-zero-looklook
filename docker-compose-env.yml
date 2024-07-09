@@ -1,5 +1,3 @@
-version: '3'
-
 ######## 项目依赖的环境，启动项目之前要先启动此环境 #######
 ######## The environment that the project depends on, starting this environment before starting the project #######
 
@@ -35,8 +33,8 @@ services:
       - ./deploy/prometheus/server/prometheus.yml:/etc/prometheus/prometheus.yml
       - ./data/prometheus/data:/prometheus
     command:
-      - '--config.file=/etc/prometheus/prometheus.yml'
-      - '--storage.tsdb.path=/prometheus'
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
     restart: always
     user: root
     ports:
@@ -55,11 +53,11 @@ services:
       TZ: Asia/Shanghai
     restart: always
     volumes:
-        - ./data/grafana/data:/var/lib/grafana
+      - ./data/grafana/data:/var/lib/grafana
     ports:
-        - "3001:3000"
+      - "3001:3000"
     networks:
-        - looklook_net
+      - looklook_net
 
   #搜集kafka业务日志、存储prometheus监控数据 - Kafka for collecting business logs and storing Prometheus monitoring data
   elasticsearch:
@@ -74,8 +72,8 @@ services:
       - ./data/elasticsearch/data:/usr/share/elasticsearch/data
     restart: always
     ports:
-    - 9200:9200
-    - 9300:9300
+      - 9200:9200
+      - 9300:9300
     networks:
       - looklook_net
 
@@ -96,7 +94,7 @@ services:
 
   #消费kafka中filebeat收集的数据输出到es - The data output collected by FileBeat in Kafka is output to ES
   go-stash:
-#    image: kevinwan/go-stash:1.0 # if you "macOs intel" or "linux amd"
+    #    image: kevinwan/go-stash:1.0 # if you "macOs intel" or "linux amd"
     image: kevinwan/go-stash:1.0-arm64 #  if you "macOs m1" or "linux arm"
     container_name: go-stash
     environment:
@@ -121,7 +119,7 @@ services:
       TZ: Asia/Shanghai
     user: root
     restart: always
-    entrypoint: "filebeat -e -strict.perms=false"  #解决配置文件权限问题 - Solving the configuration file permissions
+    entrypoint: "filebeat -e -strict.perms=false" #解决配置文件权限问题 - Solving the configuration file permissions
     volumes:
       - ./deploy/filebeat/conf/filebeat.yml:/usr/share/filebeat/filebeat.yml
       # 此处需指定docker的containers目录，取决于你docker的配置 - The containers directory of docker needs to be specified here, depending on your docker configuration
@@ -132,7 +130,6 @@ services:
       - looklook_net
     depends_on:
       - kafka
-
 
   #zookeeper是kafka的依赖 - Zookeeper is the dependencies of Kafka
   zookeeper:
@@ -173,8 +170,8 @@ services:
     ports:
       - 8980:8080
     command:
-      - '--redis-addr=redis:6379'
-      - '--redis-password=G62m50oigInC30sf'
+      - "--redis-addr=redis:6379"
+      - "--redis-password=G62m50oigInC30sf"
     restart: always
     networks:
       - looklook_net
@@ -196,7 +193,7 @@ services:
       - ./data/mysql/data:/var/lib/mysql
       # 日志
     command:
-      # 将mysql8.0默认密码策略 修改为 原先 策略 (mysql8.0对其默认策略做了更改 会导致密码无法匹配) 
+      # 将mysql8.0默认密码策略 修改为 原先 策略 (mysql8.0对其默认策略做了更改 会导致密码无法匹配)
       # Modify the Mysql 8.0 default password strategy to the original strategy (MySQL8.0 to change its default strategy will cause the password to be unable to match)
       --default-authentication-plugin=mysql_native_password
       --character-set-server=utf8mb4
@@ -226,11 +223,9 @@ services:
     networks:
       - looklook_net
 
-
 networks:
   looklook_net:
     driver: bridge
     ipam:
       config:
         - subnet: 172.16.0.0/16
-
