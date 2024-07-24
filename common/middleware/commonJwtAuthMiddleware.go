@@ -1,8 +1,9 @@
 package middleware
 
 import (
-	"github.com/zeromicro/go-zero/rest/handler"
 	"net/http"
+
+	"github.com/zeromicro/go-zero/rest/handler"
 )
 
 // CommonJwtAuthMiddleware : with jwt on the verification, no jwt on the verification

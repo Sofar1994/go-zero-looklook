@@ -29,8 +29,8 @@ func NewHomestayOrderDetailLogic(ctx context.Context, svcCtx *svc.ServiceContext
 
 func (l *HomestayOrderDetailLogic) HomestayOrderDetail(in *pb.HomestayOrderDetailReq) (*pb.HomestayOrderDetailResp, error) {
 
-	homestayOrder, err := l.svcCtx.HomestayOrderModel.FindOneBySn(l.ctx,in.Sn)
-	if err != nil && err != model.ErrNotFound {
+	homestayOrder, err := l.svcCtx.HomestayOrderModel.FindOneBySn(l.ctx, in.Sn)
+	if err != nil && !errors.Is(err, model.ErrNotFound) {
 		return nil, errors.Wrapf(xerr.NewErrCode(xerr.DB_ERROR), "HomestayOrderModel  FindOneBySn db err : %v , sn : %s", err, in.Sn)
 	}
 

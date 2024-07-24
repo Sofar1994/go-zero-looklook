@@ -45,7 +45,10 @@ func (l *UserHomestayOrderDetailLogic) UserHomestayOrderDetail(req types.UserHom
 	var typesOrderDetail types.UserHomestayOrderDetailResp
 	if resp.HomestayOrder != nil && resp.HomestayOrder.UserId == userId {
 
-		copier.Copy(&typesOrderDetail, resp.HomestayOrder)
+		err := copier.Copy(&typesOrderDetail, resp.HomestayOrder)
+		if err != nil {
+			return nil, err
+		}
 
 		//重置价格.
 		typesOrderDetail.OrderTotalPrice = tool.Fen2Yuan(resp.HomestayOrder.OrderTotalPrice)
